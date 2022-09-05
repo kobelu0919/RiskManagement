@@ -32,3 +32,4 @@ using {riskmanagement as rm} from '../db/schema';
     
     entity BusinessPartners as projection on rm.BusinessPartners;
  }
+
