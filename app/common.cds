@@ -1,4 +1,5 @@
 using riskmanagement as rm from '../db/schema';
+using cpiadvancedtool as cvt from '../db/CPISchema';
 
  // Annotate Risk elements
  annotate rm.Risks with {
@@ -43,3 +44,24 @@ annotate rm.Risks with {
     }
   });
  }
+
+
+annotate cvt.CPIMessStat with {
+ TENANT_NAME     @title : 'tenant name';
+ MESSAGE_ID  @title : 'message id';
+ IFLOW_ID    @title : 'iflow name';
+ START_TIME   @title : 'start time';
+ END_TIME  @title : 'end time';
+ STATUS   @title : 'status';
+ ERROR_INFO @title : 'error info';
+ TIMEZONE @title : 'time zone';
+ DURATION @title : 'duration';
+ } 
+
+
+ annotate cvt.CPIMessPayload with {
+ TENANT_NAME     @title : 'tenant name';
+ MESSAGE_ID  @title : 'message id';
+ STEP @title: 'step';
+ PAYLOAD @title : 'payload';
+ } 

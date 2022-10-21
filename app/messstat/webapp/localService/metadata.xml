@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CPIAdvancedTool" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="MessStat" EntityType="CPIAdvancedTool.MessStat">
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="MessStat"/>
+                </EntitySet>
+                <EntitySet Name="MessPayload" EntityType="CPIAdvancedTool.MessPayload">
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="MessPayload"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="MessStat">
+                <Key>
+                    <PropertyRef Name="TENANT_NAME"/>
+                    <PropertyRef Name="MESSAGE_ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="TENANT_NAME" Type="Edm.String" MaxLength="255" Nullable="false"/>
+                <Property Name="MESSAGE_ID" Type="Edm.String" MaxLength="255" Nullable="false"/>
+                <Property Name="IFLOW_ID" Type="Edm.String" MaxLength="255"/>
+                <Property Name="START_TIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="END_TIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="STATUS" Type="Edm.String" MaxLength="20"/>
+                <Property Name="ERROR_INFO" Type="Edm.String" MaxLength="5000"/>
+                <Property Name="TIMEZONE" Type="Edm.String" MaxLength="6"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="CPIAdvancedTool.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="CPIAdvancedTool.MessStat"/>
+            </EntityType>
+            <EntityType Name="MessPayload">
+                <Key>
+                    <PropertyRef Name="TENANT_NAME"/>
+                    <PropertyRef Name="MESSAGE_ID"/>
+                    <PropertyRef Name="STEP"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="TENANT_NAME" Type="Edm.String" MaxLength="255" Nullable="false"/>
+                <Property Name="MESSAGE_ID" Type="Edm.String" MaxLength="255" Nullable="false"/>
+                <Property Name="STEP" Type="Edm.String" MaxLength="8" Nullable="false"/>
+                <Property Name="PAYLOAD" Type="Edm.String"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="CPIAdvancedTool.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="CPIAdvancedTool.MessPayload"/>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CPIAdvancedTool.MessStat"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="CPIAdvancedTool.MessStat"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CPIAdvancedTool.MessPayload"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="CPIAdvancedTool.MessPayload"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CPIAdvancedTool.MessStat"/>
+                <ReturnType Type="CPIAdvancedTool.MessStat"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CPIAdvancedTool.MessPayload"/>
+                <ReturnType Type="CPIAdvancedTool.MessPayload"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CPIAdvancedTool.MessStat"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="CPIAdvancedTool.MessStat"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CPIAdvancedTool.MessPayload"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="CPIAdvancedTool.MessPayload"/>
+            </Action>
+            <Annotations Target="CPIAdvancedTool.EntityContainer/MessStat">
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="CPIAdvancedTool.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="CPIAdvancedTool.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="CPIAdvancedTool.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CPIAdvancedTool.MessStat/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="CPIAdvancedTool.MessStat/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="CPIAdvancedTool.MessStat/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="CPIAdvancedTool.MessStat/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="CPIAdvancedTool.MessStat/IsActiveEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CPIAdvancedTool.MessStat/HasActiveEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CPIAdvancedTool.MessStat/HasDraftEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CPIAdvancedTool.MessStat/DraftAdministrativeData">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CPIAdvancedTool.EntityContainer/MessPayload">
+                                        <Annotation Term="Common.DraftRoot">
+                                            <Record Type="Common.DraftRootType">
+                                                <PropertyValue Property="ActivationAction" String="CPIAdvancedTool.draftActivate"/>
+                                                <PropertyValue Property="EditAction" String="CPIAdvancedTool.draftEdit"/>
+                                                <PropertyValue Property="PreparationAction" String="CPIAdvancedTool.draftPrepare"/>
+                                            </Record>
+                                        </Annotation>
+                                    </Annotations>
+                                    <Annotations Target="CPIAdvancedTool.MessPayload/createdAt">
+                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                        </Annotations>
+                                        <Annotations Target="CPIAdvancedTool.MessPayload/createdBy">
+                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                </Annotations>
+                                                <Annotations Target="CPIAdvancedTool.MessPayload/modifiedAt">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="CPIAdvancedTool.MessPayload/modifiedBy">
+                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CPIAdvancedTool.MessPayload/IsActiveEntity">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CPIAdvancedTool.MessPayload/HasActiveEntity">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CPIAdvancedTool.MessPayload/HasDraftEntity">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CPIAdvancedTool.MessPayload/DraftAdministrativeData">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CPIAdvancedTool.DraftAdministrativeData">
+                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                                                                </Annotations>
+                                                                <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/DraftUUID">
+                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/CreationDateTime">
+                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                                                        </Annotations>
+                                                                        <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/CreatedByUser">
+                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                                                            </Annotations>
+                                                                            <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/DraftIsCreatedByMe">
+                                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/LastChangeDateTime">
+                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/LastChangedByUser">
+                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/InProcessByUser">
+                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="CPIAdvancedTool.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                                                                </Annotations>
+                                                                                            </Schema>
+                                                                                        </edmx:DataServices>
+                                                                                    </edmx:Edmx>

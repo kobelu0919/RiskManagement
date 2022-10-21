@@ -10,7 +10,7 @@ namespace riskmanagement;
  miti : Association to Mitigations;
  impact : Integer;
  bp : Association to BusinessPartners;
- criticality : Integer;
+ criticality : String;
  }
 
  entity Mitigations : managed {
